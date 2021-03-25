@@ -1,0 +1,50 @@
+//Write a C program to implement Bit stuffing error control method
+
+#include <stdio.h>
+
+int main()
+{
+    //reading
+    int a[20],b[20],i = 0, j = 0, k = 0, n = 1,size;
+    printf("Enter number of bits:");
+    scanf("%d",&size);
+    printf("Enter data bits (0s and 1s):\n");
+    for(i=0; i<size; i++){
+        scanf("%d",&a[i]);
+    }
+    i=0;
+    while(i<size)
+    {
+        if(a[i]==1)     //if the read bit is 1 
+        {
+            b[j]=a[i];      //read into b
+            //look for 5 consecutive 1s
+            for(k=i+1; a[k]==1 && k<size && n<5; k++)
+            {
+                j++;
+                b[j]=a[k];
+                n++;
+                if(n==5)    //if five consecutive 1s, stuff 0
+                {
+                    n=0;    //reset the count
+            j++;
+                    b[j]=0;
+                }
+                i=k;
+            }
+        }
+        else
+        {
+            b[j]=a[i];  //if not 1, read that 0 as it is
+        }
+        i++;
+        j++;
+    }
+    //print
+    printf("The final frame is:");
+    printf("01111110 ");
+    for(i=0; i<j; i++)
+        printf("%d",b[i]);
+    printf(" 01111110");
+    return 0;
+}
